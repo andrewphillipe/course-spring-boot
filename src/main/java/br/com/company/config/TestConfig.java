@@ -15,7 +15,7 @@ import br.com.company.entities.Order;
 import br.com.company.entities.Payment;
 import br.com.company.entities.Product;
 import br.com.company.entities.User;
-import br.com.company.enums.OrderStatus;
+import br.com.company.entities.enums.OrderStatus;
 import br.com.company.repositories.OrderRepository;
 import br.com.company.repositories.UserRepository;
 

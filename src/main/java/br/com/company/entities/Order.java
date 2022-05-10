@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.company.enums.OrderStatus;
+import br.com.company.entities.enums.OrderStatus;
 
 @Entity
 @Table(name = "tb_order")
@@ -43,7 +43,7 @@ public class Order implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	private OrderStatus orderStatus;
+	private Integer orderStatus;
 
 	public Order() {
 	}
@@ -53,7 +53,7 @@ public class Order implements Serializable {
 		this.moment = moment;
 		this.products = products;
 		this.user = user;
-		this.orderStatus = orderStatus;
+		setOrderStatus(orderStatus);
 	}
 
 	public Order(Long id, Instant moment, List<Product> products, Payment payment, User user, OrderStatus orderStatus) {
@@ -62,7 +62,7 @@ public class Order implements Serializable {
 		this.products = products;
 		this.payment = payment;
 		this.user = user;
-		this.orderStatus = orderStatus;
+		setOrderStatus(orderStatus);
 	}
 
 	public Long getId() {
@@ -106,11 +106,13 @@ public class Order implements Serializable {
 	}
 
 	public OrderStatus getOrderStatus() {
-		return orderStatus;
+		return OrderStatus.valueOf(orderStatus);
 	}
 
 	public void setOrderStatus(OrderStatus orderStatus) {
-		this.orderStatus = orderStatus;
+		if (orderStatus != null) {
+			this.orderStatus = orderStatus.getCode();
+		}
 	}
 
 	@Override
