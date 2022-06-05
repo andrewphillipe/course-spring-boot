@@ -7,17 +7,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-public class Category implements Serializable{
+@Table(name = "tb_category")
+public class Category implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	
+
 	public Category() {
 	}
 
@@ -44,7 +46,7 @@ public class Category implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -56,12 +58,12 @@ public class Category implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Category other = (Category) obj;
-		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
+		return Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
 		return "Category [id=" + id + ", name=" + name + "]";
 	}
-	
+
 }
