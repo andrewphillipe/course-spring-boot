@@ -28,7 +28,7 @@ public class User implements Serializable {
 	private String email;
 	private String phone;
 	private String password;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Order> orders = new ArrayList<>();
@@ -105,12 +105,6 @@ public class User implements Serializable {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", password=" + password
-				+ ", orders=" + orders + "]";
 	}
 
 }

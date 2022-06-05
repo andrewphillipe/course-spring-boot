@@ -2,18 +2,17 @@ package br.com.company.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -30,39 +29,27 @@ public class Order implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
-
-	@JoinColumn(name = "product_id")
-	@ManyToMany(fetch = FetchType.LAZY)
-	private List<Product> products = new ArrayList<>();
-
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z", timezone = "GMT")
-	private Payment payment;
+	
+	private Integer orderStatus;
 
 	@ManyToOne()
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	private Integer orderStatus;
+	@OneToMany(mappedBy = "id.order")
+	private Set<OrderItem> items = new HashSet<>();
+	
 
 	public Order() {
 	}
 
-	public Order(Long id, Instant moment, List<Product> products, User user, OrderStatus orderStatus) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User user) {
 		this.id = id;
 		this.moment = moment;
-		this.products = products;
-		this.user = user;
 		setOrderStatus(orderStatus);
-	}
-
-	public Order(Long id, Instant moment, List<Product> products, Payment payment, User user, OrderStatus orderStatus) {
-		this.id = id;
-		this.moment = moment;
-		this.products = products;
-		this.payment = payment;
 		this.user = user;
-		setOrderStatus(orderStatus);
 	}
 
 	public Long getId() {
@@ -79,22 +66,6 @@ public class Order implements Serializable {
 
 	public void setMoment(Instant moment) {
 		this.moment = moment;
-	}
-
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
 	}
 
 	public User getUser() {
@@ -115,6 +86,10 @@ public class Order implements Serializable {
 		}
 	}
 
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -130,12 +105,6 @@ public class Order implements Serializable {
 			return false;
 		Order other = (Order) obj;
 		return Objects.equals(id, other.id);
-	}
-
-	@Override
-	public String toString() {
-		return "Order [id=" + id + ", moment=" + moment + ", products=" + products + ", payment=" + payment + ", user="
-				+ user + ", orderStatus=" + orderStatus + "]";
 	}
 
 }

@@ -8,6 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Payment implements Serializable {
@@ -19,12 +23,18 @@ public class Payment implements Serializable {
 	private Long id;
 	private Instant moment;
 
+	@JsonIgnore
+	@OneToOne
+	@MapsId
+	private Order order;
+
 	public Payment() {
 	}
 
-	public Payment(Long id, Instant moment) {
+	public Payment(Long id, Instant moment, Order order) {
 		this.id = id;
 		this.moment = moment;
+		this.order = order;
 	}
 
 	public Long getId() {
@@ -42,6 +52,14 @@ public class Payment implements Serializable {
 	public void setMoment(Instant moment) {
 		this.moment = moment;
 	}
+	
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
 
 	@Override
 	public int hashCode() {
@@ -58,11 +76,6 @@ public class Payment implements Serializable {
 			return false;
 		Payment other = (Payment) obj;
 		return Objects.equals(id, other.id) && Objects.equals(moment, other.moment);
-	}
-
-	@Override
-	public String toString() {
-		return "Payment [id=" + id + ", moment=" + moment + "]";
 	}
 
 }

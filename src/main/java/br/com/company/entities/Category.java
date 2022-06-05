@@ -74,9 +74,4 @@ public class Category implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", name=" + name + ", products=" + products + "]";
-	}
-
 }
