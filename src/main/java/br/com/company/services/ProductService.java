@@ -13,16 +13,14 @@ import br.com.company.repositories.ProductRepository;
 public class ProductService {
 
 	@Autowired
-	private ProductRepository productRepository;
-
+	private ProductRepository repository;
+	
 	public List<Product> findAll() {
-		return productRepository.findAll();
+		return repository.findAll();
 	}
-
+	
 	public Product findById(Long id) {
-		Optional<Product> product = productRepository.findById(id);
-
-		return product.get();
+		Optional<Product> obj = repository.findById(id);
+		return obj.get();
 	}
-
 }
